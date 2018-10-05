@@ -2,6 +2,7 @@ namespace mvc_music_store.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -26,9 +27,11 @@ namespace mvc_music_store.Models
         [StringLength(160)]
         public string Title { get; set; }
 
+        [DataType(DataType.Currency)]
         [Column(TypeName = "numeric")]
         public decimal Price { get; set; }
 
+        [DisplayName("Album Art")]
         [StringLength(1024)]
         public string AlbumArtUrl { get; set; }
 
