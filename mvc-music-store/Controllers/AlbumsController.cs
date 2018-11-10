@@ -10,6 +10,7 @@ using mvc_music_store.Models;
 
 namespace mvc_music_store.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class AlbumsController : Controller
     {
         // automatically connects to database
@@ -22,7 +23,8 @@ namespace mvc_music_store.Controllers
             return View(albums.ToList());
         }
 
-        // GET: Albums/Details/5
+        // GET: Albums/Details/
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -40,8 +42,8 @@ namespace mvc_music_store.Controllers
         // GET: Albums/Create
         public ActionResult Create()
         {
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name");
-            ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name");
+            ViewBag.ArtistId = new SelectList(db.Artists.OrderBy(a => a.Name), "ArtistId", "Name");
+            ViewBag.GenreId = new SelectList(db.Genres.OrderBy(g => g.Name), "GenreId", "Name");
             return View();
         }
 
@@ -54,6 +56,19 @@ namespace mvc_music_store.Controllers
         {
             if (ModelState.IsValid)
             {
+                // upload image if any
+                if (Request.Files.Count > 0)
+                {
+                    var file = Request.Files[0];
+
+                    if (file.FileName != null && file.ContentLength > 0)
+                    {
+                        // set destination path
+                        string path = Server.MapPath("~/Content/Images/") + file.FileName;
+                        file.SaveAs(path);
+                        album.AlbumArtUrl = "/Content/Images/" + file.FileName;
+                    }
+                }
                 db.Albums.Add(album);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -76,8 +91,8 @@ namespace mvc_music_store.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ArtistId = new SelectList(db.Artists, "ArtistId", "Name", album.ArtistId);
-            ViewBag.GenreId = new SelectList(db.Genres, "GenreId", "Name", album.GenreId);
+            ViewBag.ArtistId = new SelectList(db.Artists.OrderBy(a => a.Name), "ArtistId", "Name", album.ArtistId);
+            ViewBag.GenreId = new SelectList(db.Genres.OrderBy(g => g.Name), "GenreId", "Name", album.GenreId);
             return View(album);
         }
 
@@ -90,6 +105,20 @@ namespace mvc_music_store.Controllers
         {
             if (ModelState.IsValid)
             {
+                // upload image if any
+                if (Request.Files.Count > 0)
+                {
+                    var file = Request.Files[0];
+
+                    if (file.FileName != null && file.ContentLength > 0)
+                    {
+                        // set destination path
+                        string path = Server.MapPath("~/Content/Images/") + file.FileName;
+                        file.SaveAs(path);
+                        album.AlbumArtUrl = "/Content/Images/" + file.FileName;
+                    }
+                }
+
                 db.Entry(album).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

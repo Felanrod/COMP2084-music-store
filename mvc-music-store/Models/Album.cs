@@ -28,6 +28,7 @@ namespace mvc_music_store.Models
         public string Title { get; set; }
 
         [DataType(DataType.Currency)]
+        [Range(0, 100000, ErrorMessage = "What kind of a price is that?")]
         [Column(TypeName = "numeric")]
         public decimal Price { get; set; }
 
