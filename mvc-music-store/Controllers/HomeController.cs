@@ -22,7 +22,7 @@ namespace mvc_music_store.Controllers
         {
             ViewBag.Message = "Your application description page.";
 
-            return View();
+            return View("About-Us");
         }
 
         public ActionResult Contact()

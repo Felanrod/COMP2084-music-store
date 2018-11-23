@@ -35,6 +35,19 @@ namespace mvc_music_store.Tests.Controllers
             ViewResult result = controller.About() as ViewResult;
 
             // Assert
+            Assert.AreEqual("About-Us", result.ViewName);
+        }
+
+        [TestMethod]
+        public void AboutViewBagValid()
+        {
+            // Arrange
+            HomeController controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.About() as ViewResult;
+
+            // Assert
             Assert.AreEqual("Your application description page.", result.ViewBag.Message);
         }
 
@@ -46,6 +59,32 @@ namespace mvc_music_store.Tests.Controllers
 
             // Act
             ViewResult result = controller.Contact() as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void ContactViewBagValid()
+        {
+            // Arrange
+            HomeController controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Contact() as ViewResult;
+
+            // Assert
+            Assert.AreEqual("Your contact page.", result.ViewBag.Message);
+        }
+
+        [TestMethod]
+        public void Store()
+        {
+            // Arrange
+            HomeController controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Store() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
